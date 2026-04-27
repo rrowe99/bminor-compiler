@@ -38,3 +38,43 @@ gcc output.s -o program
 - Register allocation and stack-based memory management
 - Designing and organizing multi-stage compiler pipelines
 - Debugging complex, low-level systems code
+
+## Example
+
+**Input (tests/bad1.bminor):**
+```c
+/* Cannot assign a character to a global integer. */
+
+x: integer = 'c';
+```
+
+**Output (error handling):**
+```bash
+type error: initializer for x does not match declared type
+```
+
+---
+
+**Input (tests/good1.bminor):**
+```c
+/* Assign integer expression to local variable/ typechecking with function call. */
+
+x: integer = 5;
+y: integer = 10;
+
+main: function void ()=
+{
+        x: integer = y * 10 + 15 - 4;
+}
+```
+
+**Output (assembly excerpt):**
+```bash
+.globl main
+main:
+    pushq %rbp
+    movq %rsp, %rbp
+    movq $0, %rax
+    leave
+    ret
+```
