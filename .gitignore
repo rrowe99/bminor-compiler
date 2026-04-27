@@ -1,4 +1,5 @@
 *.o
 *.out
 *.s
+out
 a.out
